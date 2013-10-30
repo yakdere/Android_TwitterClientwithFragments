@@ -13,7 +13,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ListView;
 
 import com.yakdere.apps.mytwitterapp.R;
 import com.yakdere.apps.mytwitterapp.TweetsAdapter;
@@ -21,9 +20,12 @@ import com.yakdere.apps.mytwitterapp.activities.ProfileActivity;
 import com.yakdere.apps.mytwitterapp.models.Tweet;
 import com.yakdere.apps.mytwitterapp.models.User;
 
+import eu.erikw.PullToRefreshListView;
+import eu.erikw.PullToRefreshListView.OnRefreshListener;
+
 public class TweetsListFragment extends Fragment  {
 	TweetsAdapter tweetsAdapter;
-	ListView lvTweets;
+	PullToRefreshListView lvTweets;
 	ArrayList<Tweet> tweets;
 	FragmentActivity listener;
 	/*
@@ -68,7 +70,7 @@ public class TweetsListFragment extends Fragment  {
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState){
 		super.onActivityCreated(savedInstanceState);
-		lvTweets = (ListView) getActivity().findViewById(R.id.lvTweets);
+		lvTweets = (PullToRefreshListView) getActivity().findViewById(R.id.lvTweets);
 		lvTweets.setAdapter(tweetsAdapter);
 		lvTweets.setOnItemClickListener( new OnItemClickListener() {
 			@Override
@@ -83,11 +85,26 @@ public class TweetsListFragment extends Fragment  {
 			}
 
 		});
+		lvTweets.setOnRefreshListener(new OnRefreshListener() {
+			// Your code to refresh the list contents
+            // Make sure you call listView.onRefreshComplete()
+            // once the loading is done. This can be done from here or any
+            // place such as when the network request has completed successfully.
+			@Override
+			public void onRefresh() {
+					tweetsAdapter.clear();
+			}
+			
+		});
+	}
+	
+	public void addTweetsToAdapter(ArrayList<Tweet> tweets) {
+		tweetsAdapter.addAll(tweets);
+		lvTweets.onRefreshComplete();
 	}
 	public TweetsAdapter getAdapter() {
 		return this.tweetsAdapter;
 	}
-
 	public void onDetach() {
 		super.onDetach();
 		listener = null;

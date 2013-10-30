@@ -23,7 +23,8 @@ public class HomeTimelineFragment extends TweetsListFragment {
 			@Override
 			public void onSuccess(JSONArray jsonTweets){
 				ArrayList<Tweet> tweets = Tweet.fromJson(jsonTweets); 
-				getAdapter().addAll(tweets);
+				addTweetsToAdapter(tweets);
+				//getAdapter().addAll(tweets);
 
 			}
 			public void onFailure(Throwable e) {

@@ -24,7 +24,7 @@ public class MentionsFragment extends TweetsListFragment{
 
 			public void onSuccess(JSONArray jsonTweets){
 				ArrayList<Tweet> tweets = Tweet.fromJson(jsonTweets); 
-				getAdapter().addAll(tweets);
+				addTweetsToAdapter(tweets);
 
 			}
 			public void onFailure(Throwable e) {
