@@ -38,6 +38,7 @@ public class ProfileActivity extends FragmentActivity {
 
 		//To see another user's profile first we need user
 		user_fromlist = (User) getIntent().getSerializableExtra("user");
+		Log.i("USER INFO INTENT", "user is:" +user_fromlist.getName());
 		client = MyTwitterApp.getRestClient();
 		//If there is no user, user will visit own profile
 		if (user_fromlist == null) {
@@ -82,6 +83,7 @@ public class ProfileActivity extends FragmentActivity {
 	 */
 
 	private void populateUserTweets(User u) {
+		Log.i("USER INFO", "tweets belong to:" +u.getName());
 		//To reference a Fragment at the runtime we need FragmentManager
 		fragmentTweetList = (TweetsListFragment) getSupportFragmentManager()
 			.findFragmentById(R.id.fragment_tweets_list);
@@ -97,10 +99,13 @@ public class ProfileActivity extends FragmentActivity {
 				public void onSuccess(JSONArray jsonUserTweets) {
 
 					Log.d("DEBUG", "Success of populating user's tweets"+jsonUserTweets);
-					TweetsAdapter adapter =  fragmentTweetList.getAdapter();
+					//fragmentTweetList.addTweetsToAdapter(Tweet.fromJson(jsonUserTweets));
+				
+					TweetsAdapter adapter = fragmentTweetList.getAdapter();
 					adapter.clear();
 					adapter.addAll(Tweet.fromJson(jsonUserTweets));
 					adapter.notifyDataSetChanged();
+					adapter.notifyDataSetInvalidated();
 				}
 				@Override
 				public void onFailure(Throwable e) {
@@ -116,5 +121,12 @@ public class ProfileActivity extends FragmentActivity {
 		getMenuInflater().inflate(R.menu.profile, menu);
 		return true;
 	}
+	@Override
+	protected void onResume() {
+		super.onResume();// Always call the superclass method first
 
+	    //the activity need to be updated everytime it resumes.
+		TweetsAdapter adapter = fragmentTweetList.getAdapter();
+		adapter.notifyDataSetChanged();
+	}
 }

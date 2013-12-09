@@ -46,9 +46,9 @@ public class User extends Model implements Serializable {
 		followingCount = jsonObject.getInt("friends_count");
 	}
 
-	public String getName() { return name;
+	public String getName() { 
+		return name;
 	}
-
 	public String getScreenName() {
 		return screenName;
 	}
@@ -60,7 +60,7 @@ public class User extends Model implements Serializable {
 	public String getProfileImageUrl() {
 		return profileImageUrl;
 	}
-	
+
 	public int getTweetCount() {
 		return tweetsCount;
 	}
@@ -84,5 +84,5 @@ public class User extends Model implements Serializable {
 		}
 	}
 
-	
+
 }

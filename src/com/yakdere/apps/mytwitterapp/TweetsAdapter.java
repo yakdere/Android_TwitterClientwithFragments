@@ -2,6 +2,7 @@ package com.yakdere.apps.mytwitterapp;
 
 import java.util.List;
 
+import android.app.Activity;
 import android.content.Context;
 import android.text.Html;
 import android.view.LayoutInflater;
@@ -15,9 +16,14 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import com.yakdere.apps.mytwitterapp.models.Tweet;
 
 public class TweetsAdapter extends ArrayAdapter<Tweet> {
+	public List<Tweet> tweets;
+	private Context context;
 
 	public TweetsAdapter(Context context, List<Tweet> tweets) {
 		super(context, 0, tweets);
+		this.context = context;
+		this.tweets = tweets;
+
 	}
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
@@ -32,11 +38,11 @@ public class TweetsAdapter extends ArrayAdapter<Tweet> {
 		TextView nameView = (TextView) view.findViewById(R.id.tvName);
 		TextView bodyView = (TextView) view.findViewById(R.id.tvBody);
 
-		
+
 		ImageLoader loader = ImageLoader.getInstance();
 		//imageView.setImageResource(android.R.color.background_light); 10 doesn't support that feature
 		loader.displayImage(tweet.getUser().getProfileImageUrl(), imageView);
-		
+
 		nameView.setText(Html.fromHtml("<b>" + tweet.getUser().getName()
 				+ "<br>" + "<small><font color='#777777'>@"
 				+tweet.getUser().getScreenName() + "</font></small>"));
